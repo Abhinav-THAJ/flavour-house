@@ -11,6 +11,7 @@ export default function CheckoutPage() {
 
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [orderId, setOrderId] = useState("");
 
   const [formData, setFormData] = useState({
@@ -19,21 +20,124 @@ export default function CheckoutPage() {
     email: "",
     address: "",
     city: "",
-    state: "Kerala",
+    state: "",
     pincode: "",
   });
 
   const shippingFee = subtotal >= 500 || cart.length === 0 ? 0 : 50;
   const finalTotal = subtotal + shippingFee;
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (document.getElementById("razorpay-script")) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.id = "razorpay-script";
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
+  const createWooCommerceOrder = async (transactionId: string | null = null) => {
+    const response = await fetch("/api/checkout/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        formData,
+        cart,
+        paymentMethod,
+        shippingFee,
+        transactionId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setOrderId(data.id.toString());
+      setIsOrderPlaced(true);
+      clearCart();
+    } else {
+      alert("Failed to place order: " + (data.error || "Unknown error"));
+    }
+  };
+
+  const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cart.length === 0) return;
 
-    const generatedId = "FH-" + Math.floor(100000 + Math.random() * 900000);
-    setOrderId(generatedId);
-    setIsOrderPlaced(true);
-    clearCart();
+    setIsProcessing(true);
+
+    try {
+      if (paymentMethod === "online") {
+        const isLoaded = await loadRazorpayScript();
+        if (!isLoaded) {
+          alert("Failed to load Razorpay SDK. Are you online?");
+          setIsProcessing(false);
+          return;
+        }
+
+        const rzRes = await fetch("/api/razorpay/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: finalTotal }),
+        });
+
+        const rzOrder = await rzRes.json();
+        
+        if (rzOrder.error) {
+           alert("Could not initialize payment. Please try again.");
+           setIsProcessing(false);
+           return;
+        }
+
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Ensure this is set in .env.local
+          amount: rzOrder.amount,
+          currency: rzOrder.currency,
+          name: "Flavor House",
+          description: "Premium Organic Foods",
+          order_id: rzOrder.id,
+          handler: async function (response: any) {
+            // Payment succeeded, create WooCommerce order
+            await createWooCommerceOrder(response.razorpay_payment_id);
+            setIsProcessing(false);
+          },
+          prefill: {
+            name: formData.fullName,
+            email: formData.email,
+            contact: formData.phone,
+          },
+          theme: {
+            color: "#B8945F", // brand-primary
+          },
+        };
+
+        const paymentObject = new (window as any).Razorpay(options);
+        paymentObject.on("payment.failed", function (response: any) {
+          alert("Payment failed: " + response.error.description);
+          setIsProcessing(false);
+        });
+        paymentObject.open();
+
+      } else {
+        // COD logic
+        await createWooCommerceOrder(null);
+        setIsProcessing(false);
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("An error occurred during checkout. Please try again.");
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -81,7 +185,7 @@ export default function CheckoutPage() {
               </div>
               <div className="flex justify-between border-b border-brand-border/60 pb-2">
                 <span className="text-brand-text/70">Deliver To:</span>
-                <span className="font-bold text-brand-dark">{formData.fullName || "Customer"} ({formData.pincode})</span>
+                <span className="font-bold text-brand-dark">{formData.fullName || "Customer"} ({formData.city}, {formData.state} - {formData.pincode})</span>
               </div>
               <div className="flex justify-between pt-1">
                 <span className="text-brand-text/70">Total Amount:</span>
@@ -195,6 +299,30 @@ export default function CheckoutPage() {
 
                     <div>
                       <label className="block font-sans text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">
+                        State *
+                      </label>
+                      <select
+                        required
+                        value={formData.state}
+                        onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                        className="w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 font-sans text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary cursor-pointer"
+                      >
+                        <option value="">Select State</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block font-sans text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">
                         PIN Code *
                       </label>
                       <input
@@ -205,6 +333,19 @@ export default function CheckoutPage() {
                         onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
                         className="w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 font-sans text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary"
                       />
+                    </div>
+
+                    <div>
+                      <label className="block font-sans text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">
+                        Country *
+                      </label>
+                      <select
+                        required
+                        disabled
+                        className="w-full bg-brand-cream/40 border border-brand-border rounded-xl px-4 py-3 font-sans text-sm text-brand-text/60 cursor-not-allowed"
+                      >
+                        <option value="India">India</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -235,35 +376,19 @@ export default function CheckoutPage() {
                       </div>
                     </label>
 
-                    <label className={`flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === 'upi' ? 'border-brand-primary bg-brand-cream/40 shadow-sm' : 'border-brand-border bg-white'}`}>
+                    <label className={`flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === 'online' ? 'border-brand-primary bg-brand-cream/40 shadow-sm' : 'border-brand-border bg-white'}`}>
                       <input
                         type="radio"
                         name="payment"
-                        value="upi"
-                        checked={paymentMethod === 'upi'}
-                        onChange={() => setPaymentMethod('upi')}
-                        className="accent-brand-primary w-4 h-4"
-                      />
-                      <Smartphone className="w-6 h-6 text-brand-primary shrink-0" />
-                      <div>
-                        <p className="font-heading font-bold text-brand-dark text-base">UPI / Google Pay / PhonePe</p>
-                        <p className="font-sans text-xs text-brand-text/60">Instant payment via any UPI app</p>
-                      </div>
-                    </label>
-
-                    <label className={`flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-brand-primary bg-brand-cream/40 shadow-sm' : 'border-brand-border bg-white'}`}>
-                      <input
-                        type="radio"
-                        name="payment"
-                        value="card"
-                        checked={paymentMethod === 'card'}
-                        onChange={() => setPaymentMethod('card')}
+                        value="online"
+                        checked={paymentMethod === 'online'}
+                        onChange={() => setPaymentMethod('online')}
                         className="accent-brand-primary w-4 h-4"
                       />
                       <CreditCard className="w-6 h-6 text-brand-primary shrink-0" />
                       <div>
-                        <p className="font-heading font-bold text-brand-dark text-base">Credit / Debit Card</p>
-                        <p className="font-sans text-xs text-brand-text/60">Visa, Mastercard, RuPay, Maestro</p>
+                        <p className="font-heading font-bold text-brand-dark text-base">Pay Online</p>
+                        <p className="font-sans text-xs text-brand-text/60">UPI, Credit/Debit Cards, NetBanking via Razorpay</p>
                       </div>
                     </label>
                   </div>
@@ -322,11 +447,17 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 form="checkout-form"
-                disabled={cart.length === 0}
+                disabled={cart.length === 0 || isProcessing}
                 className="w-full bg-brand-primary text-white font-button uppercase tracking-wider py-4 rounded-full hover:bg-brand-dark disabled:opacity-50 transition-all duration-300 shadow-xl flex items-center justify-center gap-2"
               >
-                <Lock className="w-4 h-4" />
-                Place Order (₹{finalTotal})
+                {isProcessing ? (
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                ) : (
+                  <>
+                    <Lock className="w-4 h-4" />
+                    Place Order (₹{finalTotal})
+                  </>
+                )}
               </button>
 
               <div className="mt-6 flex items-center justify-center gap-2 text-xs font-sans text-brand-text/60">

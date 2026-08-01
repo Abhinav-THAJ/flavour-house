@@ -1,21 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingBag, Check } from "lucide-react";
 import Link from "next/link";
 
 // Product Data
-import { PRODUCTS, CATEGORIES } from "@/lib/data";
+import { CATEGORIES } from "@/lib/data";
 import { useCart } from "@/context/CartContext";
 
 export default function ProductsPage() {
   const { addToCart } = useCart();
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [addedId, setAddedId] = useState<number | null>(null);
 
-  const handleQuickAdd = (product: typeof PRODUCTS[0], e: React.MouseEvent) => {
+  useEffect(() => {
+    fetch("/api/products/")
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch products:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleQuickAdd = (product: any, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart({ id: product.id, name: product.name, price: product.price, image: product.image });
@@ -23,7 +38,7 @@ export default function ProductsPage() {
     setTimeout(() => setAddedId(null), 2000);
   };
 
-  const filteredProducts = PRODUCTS.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     const matchesCategory = activeCategory === "All" || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -95,14 +110,19 @@ export default function ProductsPage() {
             <h2 className="font-heading text-2xl font-bold text-brand-dark">
               {activeCategory === "All" ? "All Products" : activeCategory}
             </h2>
-            <p className="font-sans text-sm text-brand-text/60">{filteredProducts.length} items</p>
+            <p className="font-sans text-sm text-brand-text/60">{loading ? "Loading..." : `${filteredProducts.length} items`}</p>
           </div>
 
-          {filteredProducts.length > 0 ? (
-            <motion.div 
-              layout
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12"
-            >
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="font-sans text-brand-text/60">No products found for your search.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
               <AnimatePresence>
                 {filteredProducts.map((product) => (
                   <motion.div
@@ -162,10 +182,6 @@ export default function ProductsPage() {
                   </motion.div>
                 ))}
               </AnimatePresence>
-            </motion.div>
-          ) : (
-            <div className="py-24 text-center">
-              <p className="font-heading text-2xl text-brand-text/50">No products found matching "{searchQuery}".</p>
             </div>
           )}
         </div>

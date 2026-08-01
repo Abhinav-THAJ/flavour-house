@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ShoppingBag, User, Heart, Menu, X } from "lucide-react";
+import { Search, ShoppingBag, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 
@@ -68,12 +68,7 @@ export function Navbar() {
             <button aria-label="Search" className="hover:text-brand-primary transition-colors">
               <Search className="w-5 h-5" />
             </button>
-            <button aria-label="Wishlist" className="hidden sm:block hover:text-brand-primary transition-colors">
-              <Heart className="w-5 h-5" />
-            </button>
-            <button aria-label="Account" className="hidden sm:block hover:text-brand-primary transition-colors">
-              <User className="w-5 h-5" />
-            </button>
+
             <button
               onClick={openCart}
               aria-label="Cart"
@@ -144,15 +139,8 @@ export function Navbar() {
                 ))}
               </div>
 
-              <div className="mt-auto p-6 border-t border-brand-border/50 flex justify-between">
-                <button className="flex flex-col items-center gap-1 text-brand-dark hover:text-brand-primary">
-                  <Heart className="w-5 h-5" />
-                  <span className="text-xs font-button">Wishlist</span>
-                </button>
-                <button className="flex flex-col items-center gap-1 text-brand-dark hover:text-brand-primary">
-                  <User className="w-5 h-5" />
-                  <span className="text-xs font-button">Account</span>
-                </button>
+              <div className="mt-auto p-6 border-t border-brand-border/50">
+                {/* Removed Wishlist and Account buttons */}
               </div>
             </motion.div>
           </>

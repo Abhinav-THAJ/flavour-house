@@ -1,25 +1,72 @@
-import { PRODUCTS } from "@/lib/data";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { ProductDetailsClient } from "@/components/products/ProductDetailsClient";
+import { api } from "@/lib/woocommerce";
+import { PRODUCTS } from "@/lib/data"; // Fallback
 
-export function generateStaticParams() {
-  return PRODUCTS.map((product) => ({
-    id: product.id.toString(),
-  }));
-}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+// We remove generateStaticParams so this page dynamically renders on every request
+// ensuring any new product added in WooCommerce is immediately available.
 
 export default async function SingleProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const product = PRODUCTS.find((p) => p.id.toString() === id);
+  
+  let product: any;
+  let relatedProducts: any[] = [];
+
+  try {
+    if (!process.env.WC_STORE_URL || !process.env.WC_CONSUMER_KEY) {
+      throw new Error("No WooCommerce configured");
+    }
+
+    // Fetch product from WooCommerce
+    const response = await api.get(`products/${id}`);
+    const data = response.data;
+
+    product = {
+      id: data.id,
+      name: data.name,
+      category: data.categories[0]?.name || "Uncategorized",
+      price: parseFloat(data.price || "0"),
+      image: data.images[0]?.src || "https://images.unsplash.com/photo-1598720290281-9f26ae6d6f81",
+      description: data.short_description || data.description,
+    };
+
+    // Fetch related products from same category
+    const catId = data.categories[0]?.id;
+    if (catId) {
+      const relatedRes = await api.get("products", {
+        category: catId,
+        per_page: 5,
+      });
+      
+      relatedProducts = relatedRes.data
+        .filter((p: any) => p.id !== data.id)
+        .slice(0, 4)
+        .map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          category: p.categories[0]?.name || "Uncategorized",
+          price: parseFloat(p.price || "0"),
+          image: p.images[0]?.src || "https://images.unsplash.com/photo-1598720290281-9f26ae6d6f81",
+        }));
+    }
+
+  } catch (error) {
+    // Fallback to local data
+    console.error("WooCommerce error on product detail:", error);
+    product = PRODUCTS.find((p) => p.id.toString() === id);
+    if (product) {
+      relatedProducts = PRODUCTS.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
+    }
+  }
 
   if (!product) {
     notFound();
   }
-
-  // Related products
-  const relatedProducts = PRODUCTS.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
 
   return (
     <div className="min-h-screen bg-brand-cream pt-10 pb-24">
