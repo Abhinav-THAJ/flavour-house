@@ -11,6 +11,7 @@ const CATEGORIES = [
     subtitle: "7 Varieties",
     image: "/images/pasta.png",
     className: "col-span-1 md:col-span-2 md:row-span-2",
+    link: "/milletpasta",
   },
   {
     id: "noodles",
@@ -18,6 +19,7 @@ const CATEGORIES = [
     subtitle: "8 Varieties",
     image: "/images/noodles.png",
     className: "col-span-1",
+    link: "/noodles",
   },
   {
     id: "vermicelli",
@@ -25,6 +27,7 @@ const CATEGORIES = [
     subtitle: "7 Varieties",
     image: "/images/vermicelli.png",
     className: "col-span-1",
+    link: "/vermicelli",
   },
   {
     id: "cookies",
@@ -32,6 +35,7 @@ const CATEGORIES = [
     subtitle: "12 Varieties",
     image: "/images/cookies.png",
     className: "col-span-1 md:col-span-2",
+    link: "/cookies",
   },
 ];
 
@@ -62,7 +66,7 @@ export function FeaturedCategories() {
                 category.className
               )}
             >
-              <Link href="/products" className="block w-full h-full">
+              <Link href={category.link} className="block w-full h-full">
                 <img
                   src={category.image}
                   alt={category.title}

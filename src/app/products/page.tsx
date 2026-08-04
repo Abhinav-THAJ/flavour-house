@@ -5,23 +5,42 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingBag, Check } from "lucide-react";
 import Link from "next/link";
 
-// Product Data
-import { CATEGORIES } from "@/lib/data";
 import { useCart } from "@/context/CartContext";
 
 export default function ProductsPage() {
   const { addToCart } = useCart();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<string[]>(["All"]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [addedId, setAddedId] = useState<number | null>(null);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const pathname = window.location.pathname.replace(/\/$/, ""); // Remove trailing slash
+      const urlParams = new URLSearchParams(window.location.search);
+      const categoryFromUrl = urlParams.get("category");
+      
+      if (categoryFromUrl) {
+        setActiveCategory(categoryFromUrl);
+      } else if (pathname === "/milletpasta") {
+        setActiveCategory("Pasta");
+      } else if (pathname === "/noodles") {
+        setActiveCategory("Noodles");
+      } else if (pathname === "/vermicelli") {
+        setActiveCategory("Vermicelli");
+      } else if (pathname === "/cookies") {
+        setActiveCategory("Cookies");
+      }
+    }
+
     fetch("/api/products/")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
+        const uniqueCategories = ["All", ...Array.from(new Set<string>(data.map((p: any) => p.category)))];
+        setCategories(uniqueCategories);
         setLoading(false);
       })
       .catch((err) => {
@@ -72,7 +91,7 @@ export default function ProductsPage() {
           
           {/* Categories */}
           <div className="flex items-center space-x-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
-            {CATEGORIES.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -122,66 +141,81 @@ export default function ProductsPage() {
               <p className="font-sans text-brand-text/60">No products found for your search.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
-              <AnimatePresence>
-                {filteredProducts.map((product) => (
-                  <motion.div
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
-                    key={product.id}
-                    className="group"
-                  >
-                    {/* Image Container */}
-                    <Link href={`/products/${product.id}`} className="block relative aspect-[4/5] bg-brand-sand rounded-3xl overflow-hidden mb-5">
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-brand-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                        <button
-                          onClick={(e) => handleQuickAdd(product, e)}
-                          className={`font-button uppercase tracking-wider text-xs px-6 py-3 rounded-full flex items-center gap-2 transition-all transform translate-y-4 group-hover:translate-y-0 shadow-xl ${
-                            addedId === product.id
-                              ? "bg-green-600 text-white"
-                              : "bg-white text-brand-dark hover:bg-brand-primary hover:text-white"
-                          }`}
-                        >
-                          {addedId === product.id ? (
-                            <>
-                              <Check className="w-4 h-4" /> Added!
-                            </>
-                          ) : (
-                            <>
-                              <ShoppingBag className="w-4 h-4" /> Quick Add
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </Link>
-                    
-                    {/* Info */}
-                    <div className="px-2">
-                      <p className="text-brand-text/50 font-sans text-xs uppercase tracking-widest mb-1">
-                        {product.category}
-                      </p>
-                      <Link href={`/products/${product.id}`}>
-                        <h3 className="font-heading font-bold text-brand-dark text-lg leading-snug mb-2 group-hover:text-brand-primary transition-colors">
-                          {product.name}
-                        </h3>
-                      </Link>
-                      <p className="font-button font-bold text-brand-dark">
-                        ₹{product.price}
-                      </p>
+            <div className="flex flex-col gap-16">
+              {(activeCategory === "All" ? categories.filter(c => c !== "All") : [activeCategory]).map(category => {
+                const categoryProducts = filteredProducts.filter(p => p.category === category);
+                if (categoryProducts.length === 0) return null;
+                return (
+                  <div key={category} className="category-section">
+                    {activeCategory === "All" && (
+                      <h3 className="font-heading text-3xl font-bold text-brand-dark mb-8 border-b border-brand-border pb-4">
+                        {category}
+                      </h3>
+                    )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
+                      <AnimatePresence>
+                        {categoryProducts.map((product) => (
+                          <motion.div
+                            layout
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            transition={{ duration: 0.3 }}
+                            key={product.id}
+                            className="group"
+                          >
+                            {/* Image Container */}
+                            <Link href={`/products/${product.id}`} className="block relative aspect-[4/5] bg-brand-sand rounded-3xl overflow-hidden mb-5">
+                              <img 
+                                src={product.image} 
+                                alt={product.name}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              />
+                              
+                              {/* Hover Overlay */}
+                              <div className="absolute inset-0 bg-brand-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                                <button
+                                  onClick={(e) => handleQuickAdd(product, e)}
+                                  className={`font-button uppercase tracking-wider text-xs px-6 py-3 rounded-full flex items-center gap-2 transition-all transform translate-y-4 group-hover:translate-y-0 shadow-xl ${
+                                    addedId === product.id
+                                      ? "bg-green-600 text-white"
+                                      : "bg-white text-brand-dark hover:bg-brand-primary hover:text-white"
+                                  }`}
+                                >
+                                  {addedId === product.id ? (
+                                    <>
+                                      <Check className="w-4 h-4" /> Added!
+                                    </>
+                                  ) : (
+                                    <>
+                                      <ShoppingBag className="w-4 h-4" /> Quick Add
+                                    </>
+                                  )}
+                                </button>
+                              </div>
+                            </Link>
+                            
+                            {/* Info */}
+                            <div className="px-2">
+                              <p className="text-brand-text/50 font-sans text-xs uppercase tracking-widest mb-1">
+                                {product.category}
+                              </p>
+                              <Link href={`/products/${product.id}`}>
+                                <h3 className="font-heading font-bold text-brand-dark text-lg leading-snug mb-2 group-hover:text-brand-primary transition-colors">
+                                  {product.name}
+                                </h3>
+                              </Link>
+                              <p className="font-button font-bold text-brand-dark">
+                                ₹{product.price}
+                              </p>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
                     </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
