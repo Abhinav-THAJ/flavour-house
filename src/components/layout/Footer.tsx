@@ -122,7 +122,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#3F3424] flex flex-col md:flex-row items-center justify-between text-xs font-sans text-[#A17D49] text-center md:text-left gap-4">
           <p>© {new Date().getFullYear()} Flavor House. All Rights Reserved.</p>
-          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 mt-4 md:mt-0">
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 mt-4 md:mt-0 pr-16 md:pr-24">
             <span>Rooted in Health, Rich in Flavour</span>
             <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-brand-primary"></span>
             <span>Crafted for Excellence</span>

@@ -66,7 +66,7 @@ export function FeaturedCategories() {
                 category.className
               )}
             >
-              <Link href={category.link} className="block w-full h-full">
+              <div className="block w-full h-full">
                 <img
                   src={category.image}
                   alt={category.title}
@@ -84,7 +84,7 @@ export function FeaturedCategories() {
                     </h3>
                   </div>
                 </div>
-              </Link>
+              </div>
             </motion.div>
           ))}
         </div>
