@@ -4,9 +4,9 @@ export async function getHomePageData() {
   if (!WP_API_URL) return null;
   
   try {
-    // Fetch page with slug 'home' to get its ACF fields
-    const res = await fetch(`${WP_API_URL}/pages?slug=home&_fields=id,title,acf`, { 
-      next: { revalidate: 60 } // Revalidate every 60 seconds
+    // Fetch page with slug 'home' to get its ACF fields with standard formatting
+    const res = await fetch(`${WP_API_URL}/pages?slug=home&_fields=id,title,acf&acf_format=standard`, { 
+      cache: "no-store" // Always fetch fresh data from WordPress
     });
     
     if (!res.ok) return null;
