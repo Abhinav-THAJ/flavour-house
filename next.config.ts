@@ -5,10 +5,10 @@ const nextConfig: NextConfig = {
   output: "standalone",
   async rewrites() {
     return [
-      { source: "/milletpasta", destination: "/products" },
-      { source: "/noodles", destination: "/products" },
-      { source: "/vermicelli", destination: "/products" },
-      { source: "/cookies", destination: "/products" },
+      { source: "/millet-pasta", destination: "/products" },
+      { source: "/millet-noodles", destination: "/products" },
+      { source: "/millet-vermicelli", destination: "/products" },
+      { source: "/millet-cookies", destination: "/products" },
     ];
   },
   images: {

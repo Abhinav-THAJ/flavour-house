@@ -12,7 +12,7 @@ const BENEFITS = [
   "Sustainable Nutrition",
 ];
 
-export function WhyMillets() {
+export function WhyMillets({ acf }: { acf?: any }) {
   return (
     <section className="py-24 bg-white overflow-hidden">
       <div className="container mx-auto px-6 md:px-12">
@@ -27,7 +27,7 @@ export function WhyMillets() {
           >
             <div className="aspect-[4/5] rounded-t-full rounded-b-[4rem] overflow-hidden bg-brand-cream relative z-10 border-8 border-white shadow-2xl">
               <img 
-                src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=1080&auto=format&fit=crop" 
+                src={acf?.why_millets_image || "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=1080&auto=format&fit=crop"} 
                 alt="Wholesome ingredients in a wooden bowl" 
                 className="w-full h-full object-cover"
               />
@@ -45,8 +45,8 @@ export function WhyMillets() {
               transition={{ delay: 0.5 }}
               className="absolute top-1/4 -right-12 bg-white p-6 rounded-2xl shadow-xl z-20 border border-brand-border"
             >
-              <p className="font-heading text-4xl font-bold text-brand-primary mb-1">100%</p>
-              <p className="font-sans text-sm text-brand-dark font-medium">Pure Organic <br/>Ingredients</p>
+              <p className="font-heading text-4xl font-bold text-brand-primary mb-1">{acf?.why_millets_floating_badge_title || "100%"}</p>
+              <p className="font-sans text-sm text-brand-dark font-medium" dangerouslySetInnerHTML={{ __html: acf?.why_millets_floating_badge_subtitle || "Pure Organic <br/>Ingredients" }}></p>
             </motion.div>
           </motion.div>
 
@@ -58,14 +58,14 @@ export function WhyMillets() {
             transition={{ duration: 0.8 }}
           >
             <span className="font-button text-sm uppercase tracking-widest text-brand-primary mb-3 block">
-              Pure Nutrition
+              {acf?.why_millets_badge || "Pure Nutrition"}
             </span>
             <h2 className="font-heading text-4xl md:text-5xl font-bold text-brand-dark mb-6 leading-tight">
-              Rooted in Health. <br />
-              <span className="italic font-subheading font-normal">Rich in Flavour.</span>
+              {acf?.why_millets_title_part_1 || "Rooted in Health."} <br />
+              <span className="italic font-subheading font-normal">{acf?.why_millets_title_part_2 || "Rich in Flavour."}</span>
             </h2>
             <p className="font-sans text-brand-text/80 text-lg mb-10 leading-relaxed">
-              We believe in bringing the finest natural food items to modern dining tables. Packed with rich dietary fiber, essential nutrients, and clean organic ingredients, our products deliver authentic taste without compromise.
+              {acf?.why_millets_description || "We believe in bringing the finest natural food items to modern dining tables. Packed with rich dietary fiber, essential nutrients, and clean organic ingredients, our products deliver authentic taste without compromise."}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">

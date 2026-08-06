@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-export function Newsletter() {
+export function Newsletter({ acf }: { acf?: any }) {
   return (
     <section className="py-32 relative overflow-hidden bg-brand-cream">
       {/* Background Graphic */}
@@ -16,13 +16,13 @@ export function Newsletter() {
           className="max-w-3xl mx-auto text-center"
         >
           <span className="font-button text-sm uppercase tracking-widest text-brand-primary mb-3 block">
-            Stay Connected
+            {acf?.newsletter_badge || "Stay Connected"}
           </span>
           <h2 className="font-heading text-4xl md:text-6xl font-bold text-brand-dark mb-6">
-            Join The Healthy <span className="italic font-subheading font-normal">Food Movement.</span>
+            {acf?.newsletter_title_part_1 || "Join The Healthy"} <span className="italic font-subheading font-normal">{acf?.newsletter_title_part_2 || "Food Movement."}</span>
           </h2>
           <p className="font-sans text-brand-text/80 text-lg mb-12 max-w-xl mx-auto">
-            Subscribe to our newsletter for exclusive recipes, early access to new products, and tips for a wholesome lifestyle.
+            {acf?.newsletter_description || "Subscribe to our newsletter for exclusive recipes, early access to new products, and tips for a wholesome lifestyle."}
           </p>
 
           <form className="flex flex-col sm:flex-row items-center gap-4 max-w-xl mx-auto">

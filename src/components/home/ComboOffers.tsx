@@ -6,7 +6,7 @@ import { ArrowRight, Sparkles, ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
 
-export function ComboOffers() {
+export function ComboOffers({ acf }: { acf?: any }) {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
@@ -71,17 +71,17 @@ export function ComboOffers() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-primary/20 border border-brand-primary/50 text-brand-cream font-button text-sm mb-4"
             >
               <Sparkles className="w-4 h-4 text-brand-primary animate-pulse" />
-              OUR TOP PICKS
+              {acf?.combo_badge || "OUR TOP PICKS"}
             </motion.div>
             <h2 className="font-heading text-4xl md:text-6xl font-bold text-white mb-4">
-              Featured Products
+              {acf?.combo_title || "Featured Products"}
             </h2>
             <p className="font-sans text-brand-sand/80 text-lg max-w-xl">
-              Get the best of Flavor House with our curated organic selection. Perfect for modern, healthy living.
+              {acf?.combo_description || "Get the best of Flavor House with our curated organic selection. Perfect for modern, healthy living."}
             </p>
           </div>
-          <Link href="/products" className="shrink-0 flex items-center gap-2 text-brand-cream hover:text-brand-primary font-button border-b border-brand-cream hover:border-brand-primary pb-1 transition-all">
-            View All Products <ArrowRight className="w-4 h-4" />
+          <Link href={acf?.combo_button_link || "/products"} className="shrink-0 flex items-center gap-2 text-brand-cream hover:text-brand-primary font-button border-b border-brand-cream hover:border-brand-primary pb-1 transition-all">
+            {acf?.combo_button_text || "View All Products"} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
