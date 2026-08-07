@@ -137,7 +137,16 @@ function ProductsPageInner() {
             {product.name}
           </h3>
         </Link>
-        <p className="font-button font-bold text-brand-dark">₹{product.price}</p>
+        <div className="flex items-baseline gap-2">
+          {product.regular_price && product.sale_price && product.regular_price > product.sale_price ? (
+            <>
+              <span className="font-sans text-sm text-brand-text/50 line-through">₹{product.regular_price}</span>
+              <span className="font-button font-bold text-brand-primary">₹{product.sale_price}</span>
+            </>
+          ) : (
+            <span className="font-button font-bold text-brand-dark">₹{product.price}</span>
+          )}
+        </div>
       </div>
     </motion.div>
   );

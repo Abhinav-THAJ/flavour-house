@@ -16,14 +16,20 @@ export async function GET() {
       status: "publish",
     });
 
-    const products = response.data.map((product: any) => ({
-      id: product.id,
-      name: product.name,
-      category: product.categories[0]?.name || "Uncategorized",
-      price: parseFloat(product.price || "0"),
-      image: product.images[0]?.src || "https://images.unsplash.com/photo-1598720290281-9f26ae6d6f81", // Fallback image
-      description: product.short_description || product.description,
-    }));
+    const products = response.data.map((product: any) => {
+      const regularPrice = parseFloat(product.regular_price || product.price || "0");
+      const salePrice = product.sale_price ? parseFloat(product.sale_price) : null;
+      return {
+        id: product.id,
+        name: product.name,
+        category: product.categories[0]?.name || "Uncategorized",
+        price: salePrice ?? regularPrice,
+        regular_price: regularPrice,
+        sale_price: salePrice ?? regularPrice,
+        image: product.images[0]?.src || "https://images.unsplash.com/photo-1598720290281-9f26ae6d6f81", // Fallback image
+        description: product.short_description || product.description,
+      };
+    });
 
     return NextResponse.json(products);
   } catch (error: any) {

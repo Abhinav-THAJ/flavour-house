@@ -30,7 +30,9 @@ export default async function SingleProductPage({ params }: { params: Promise<{ 
       id: data.id,
       name: data.name,
       category: data.categories[0]?.name || "Uncategorized",
-      price: parseFloat(data.price || "0"),
+      price: data.sale_price ? parseFloat(data.sale_price) : parseFloat(data.price || "0"),
+      regular_price: parseFloat(data.regular_price || data.price || "0"),
+      sale_price: data.sale_price ? parseFloat(data.sale_price) : parseFloat(data.price || "0"),
       image: data.images[0]?.src || "https://images.unsplash.com/photo-1598720290281-9f26ae6d6f81",
       description: data.short_description || data.description,
     };
@@ -50,7 +52,9 @@ export default async function SingleProductPage({ params }: { params: Promise<{ 
           id: p.id,
           name: p.name,
           category: p.categories[0]?.name || "Uncategorized",
-          price: parseFloat(p.price || "0"),
+          price: p.sale_price ? parseFloat(p.sale_price) : parseFloat(p.price || "0"),
+          regular_price: parseFloat(p.regular_price || p.price || "0"),
+          sale_price: p.sale_price ? parseFloat(p.sale_price) : parseFloat(p.price || "0"),
           image: p.images[0]?.src || "https://images.unsplash.com/photo-1598720290281-9f26ae6d6f81",
         }));
     }
@@ -119,9 +123,16 @@ export default async function SingleProductPage({ params }: { params: Promise<{ 
                     <h3 className="font-heading font-bold text-brand-dark text-lg mb-1 group-hover:text-brand-primary transition-colors">
                       {related.name}
                     </h3>
-                    <p className="font-button font-bold text-brand-dark">
-                      ₹{related.price}
-                    </p>
+                    <div className="flex items-baseline gap-2">
+                      {related.regular_price && related.sale_price && related.regular_price > related.sale_price ? (
+                        <>
+                          <span className="font-sans text-sm text-brand-text/50 line-through">₹{related.regular_price}</span>
+                          <span className="font-button font-bold text-brand-primary">₹{related.sale_price}</span>
+                        </>
+                      ) : (
+                        <span className="font-button font-bold text-brand-dark">₹{related.price}</span>
+                      )}
+                    </div>
                   </div>
                 </Link>
               ))}

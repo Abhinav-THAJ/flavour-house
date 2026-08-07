@@ -9,6 +9,8 @@ interface Product {
   name: string;
   category: string;
   price: number;
+  regular_price?: number;
+  sale_price?: number;
   image: string;
 }
 
@@ -40,13 +42,31 @@ export function ProductDetailsClient({ product }: { product: Product }) {
         {product.name}
       </h1>
       <div className="flex items-baseline gap-3 mb-6">
-        <p className="font-heading text-4xl font-bold text-brand-dark">
-          ₹{product.price * quantity}
-        </p>
-        {quantity > 1 && (
-          <span className="text-brand-text/60 font-sans text-sm">
-            (₹{product.price} each)
-          </span>
+        {product.regular_price && product.sale_price && product.regular_price > product.sale_price ? (
+          <>
+            <p className="font-heading text-4xl font-bold text-brand-primary">
+              ₹{product.sale_price * quantity}
+            </p>
+            <span className="font-sans text-xl text-brand-text/50 line-through">
+              ₹{product.regular_price * quantity}
+            </span>
+            {quantity > 1 && (
+              <span className="text-brand-text/60 font-sans text-sm">
+                (₹{product.sale_price} each)
+              </span>
+            )}
+          </>
+        ) : (
+          <>
+            <p className="font-heading text-4xl font-bold text-brand-dark">
+              ₹{product.price * quantity}
+            </p>
+            {quantity > 1 && (
+              <span className="text-brand-text/60 font-sans text-sm">
+                (₹{product.price} each)
+              </span>
+            )}
+          </>
         )}
       </div>
       
