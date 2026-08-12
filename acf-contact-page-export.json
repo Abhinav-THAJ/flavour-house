@@ -1,0 +1,133 @@
+[
+    {
+        "key": "group_contact_page",
+        "title": "Contact Page Content",
+        "fields": [
+            {
+                "key": "field_contact_tab_hero",
+                "label": "Hero Section",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_contact_hero_badge",
+                "label": "Hero Badge",
+                "name": "hero_badge",
+                "type": "text",
+                "default_value": "We'd Love to Hear From You"
+            },
+            {
+                "key": "field_contact_hero_title",
+                "label": "Hero Title",
+                "name": "hero_title",
+                "type": "text",
+                "default_value": "Contact Us"
+            },
+            {
+                "key": "field_contact_hero_description",
+                "label": "Hero Description",
+                "name": "hero_description",
+                "type": "textarea",
+                "default_value": "Have questions about our products, orders, or trade inquiries? Reach out to our dedicated team."
+            },
+            {
+                "key": "field_contact_hero_image",
+                "label": "Hero Background Image",
+                "name": "hero_image",
+                "type": "image",
+                "return_format": "url"
+            },
+            {
+                "key": "field_contact_tab_info",
+                "label": "Contact Information",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_contact_office_address",
+                "label": "Office Address",
+                "name": "office_address",
+                "type": "textarea",
+                "default_value": "11/280 A Medammal Building\nAshupathri Padi, Vaniyannur\nIringavoor PO, Tirur\nMalappuram, Kerala – 676103"
+            },
+            {
+                "key": "field_contact_general_email",
+                "label": "General Inquiry Email",
+                "name": "general_email",
+                "type": "email",
+                "default_value": "info@flavorhousefoods.com"
+            },
+            {
+                "key": "field_contact_sales_email",
+                "label": "Sales & Business Email",
+                "name": "sales_email",
+                "type": "email",
+                "default_value": "sales@flavorhousefoods.com"
+            },
+            {
+                "key": "field_contact_phone_number",
+                "label": "Phone Number",
+                "name": "phone_number",
+                "type": "text",
+                "default_value": "+91 94466 40824"
+            },
+            {
+                "key": "field_contact_whatsapp_number",
+                "label": "WhatsApp Number (Digits only, include country code)",
+                "name": "whatsapp_number",
+                "type": "text",
+                "default_value": "919446640824"
+            },
+            {
+                "key": "field_contact_tab_social",
+                "label": "Social Media Links",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_contact_facebook_link",
+                "label": "Facebook Link",
+                "name": "facebook_link",
+                "type": "url",
+                "default_value": "https://www.facebook.com/share/17rmar29kM/?mibextid=wwXIfr"
+            },
+            {
+                "key": "field_contact_instagram_link",
+                "label": "Instagram Link",
+                "name": "instagram_link",
+                "type": "url",
+                "default_value": "https://www.instagram.com/flavorhouse.in?igsh=bGY2aWhpeWM1NHBj&utm_source=qr"
+            },
+            {
+                "key": "field_contact_youtube_link",
+                "label": "YouTube Link",
+                "name": "youtube_link",
+                "type": "url",
+                "default_value": "https://youtube.com/@flavorhousefoods?si=nwsDzLaJsmPDj0rD"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "contact"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Content for Contact Page"
+    }
+]
