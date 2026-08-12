@@ -1,0 +1,306 @@
+[
+    {
+        "key": "group_combo_offers_page",
+        "title": "Combo Offers Page Content",
+        "fields": [
+            {
+                "key": "field_combo_tab_hero",
+                "label": "Hero Section",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_combo_hero_badge",
+                "label": "Hero Badge",
+                "name": "hero_badge",
+                "type": "text",
+                "default_value": "Exclusive Value Bundles"
+            },
+            {
+                "key": "field_combo_hero_title",
+                "label": "Hero Title",
+                "name": "hero_title",
+                "type": "text",
+                "default_value": "Combo Offers"
+            },
+            {
+                "key": "field_combo_hero_description",
+                "label": "Hero Description",
+                "name": "hero_description",
+                "type": "textarea",
+                "default_value": "Bundle and save with our curated packages."
+            },
+            {
+                "key": "field_combo_tab_combo_1",
+                "label": "Combo 1",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_combo_1_title",
+                "label": "Combo Title",
+                "name": "combo_1_title",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_1_subtitle",
+                "label": "Subtitle",
+                "name": "combo_1_subtitle",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_1_description",
+                "label": "Description",
+                "name": "combo_1_description",
+                "type": "textarea"
+            },
+            {
+                "key": "field_combo_1_originalPrice",
+                "label": "Original Price",
+                "name": "combo_1_originalPrice",
+                "type": "number"
+            },
+            {
+                "key": "field_combo_1_offerPrice",
+                "label": "Offer Price",
+                "name": "combo_1_offerPrice",
+                "type": "number"
+            },
+            {
+                "key": "field_combo_1_savings",
+                "label": "Savings Badge (e.g. 20% OFF)",
+                "name": "combo_1_savings",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_1_tag",
+                "label": "Tag (e.g. POPULAR)",
+                "name": "combo_1_tag",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_1_image",
+                "label": "Combo Image",
+                "name": "combo_1_image",
+                "type": "image",
+                "return_format": "url"
+            },
+            {
+                "key": "field_combo_1_items",
+                "label": "Included Items (One per line)",
+                "name": "combo_1_items",
+                "type": "textarea"
+            },
+            {
+                "key": "field_combo_tab_combo_2",
+                "label": "Combo 2",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_combo_2_title",
+                "label": "Combo Title",
+                "name": "combo_2_title",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_2_subtitle",
+                "label": "Subtitle",
+                "name": "combo_2_subtitle",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_2_description",
+                "label": "Description",
+                "name": "combo_2_description",
+                "type": "textarea"
+            },
+            {
+                "key": "field_combo_2_originalPrice",
+                "label": "Original Price",
+                "name": "combo_2_originalPrice",
+                "type": "number"
+            },
+            {
+                "key": "field_combo_2_offerPrice",
+                "label": "Offer Price",
+                "name": "combo_2_offerPrice",
+                "type": "number"
+            },
+            {
+                "key": "field_combo_2_savings",
+                "label": "Savings Badge (e.g. 20% OFF)",
+                "name": "combo_2_savings",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_2_tag",
+                "label": "Tag (e.g. POPULAR)",
+                "name": "combo_2_tag",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_2_image",
+                "label": "Combo Image",
+                "name": "combo_2_image",
+                "type": "image",
+                "return_format": "url"
+            },
+            {
+                "key": "field_combo_2_items",
+                "label": "Included Items (One per line)",
+                "name": "combo_2_items",
+                "type": "textarea"
+            },
+            {
+                "key": "field_combo_tab_combo_3",
+                "label": "Combo 3",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_combo_3_title",
+                "label": "Combo Title",
+                "name": "combo_3_title",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_3_subtitle",
+                "label": "Subtitle",
+                "name": "combo_3_subtitle",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_3_description",
+                "label": "Description",
+                "name": "combo_3_description",
+                "type": "textarea"
+            },
+            {
+                "key": "field_combo_3_originalPrice",
+                "label": "Original Price",
+                "name": "combo_3_originalPrice",
+                "type": "number"
+            },
+            {
+                "key": "field_combo_3_offerPrice",
+                "label": "Offer Price",
+                "name": "combo_3_offerPrice",
+                "type": "number"
+            },
+            {
+                "key": "field_combo_3_savings",
+                "label": "Savings Badge",
+                "name": "combo_3_savings",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_3_tag",
+                "label": "Tag",
+                "name": "combo_3_tag",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_3_image",
+                "label": "Combo Image",
+                "name": "combo_3_image",
+                "type": "image",
+                "return_format": "url"
+            },
+            {
+                "key": "field_combo_3_items",
+                "label": "Included Items",
+                "name": "combo_3_items",
+                "type": "textarea"
+            },
+            {
+                "key": "field_combo_tab_combo_4",
+                "label": "Combo 4",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_combo_4_title",
+                "label": "Combo Title",
+                "name": "combo_4_title",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_4_subtitle",
+                "label": "Subtitle",
+                "name": "combo_4_subtitle",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_4_description",
+                "label": "Description",
+                "name": "combo_4_description",
+                "type": "textarea"
+            },
+            {
+                "key": "field_combo_4_originalPrice",
+                "label": "Original Price",
+                "name": "combo_4_originalPrice",
+                "type": "number"
+            },
+            {
+                "key": "field_combo_4_offerPrice",
+                "label": "Offer Price",
+                "name": "combo_4_offerPrice",
+                "type": "number"
+            },
+            {
+                "key": "field_combo_4_savings",
+                "label": "Savings Badge",
+                "name": "combo_4_savings",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_4_tag",
+                "label": "Tag",
+                "name": "combo_4_tag",
+                "type": "text"
+            },
+            {
+                "key": "field_combo_4_image",
+                "label": "Combo Image",
+                "name": "combo_4_image",
+                "type": "image",
+                "return_format": "url"
+            },
+            {
+                "key": "field_combo_4_items",
+                "label": "Included Items",
+                "name": "combo_4_items",
+                "type": "textarea"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "combo-offers"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Content for Combo Offers Page"
+    }
+]
