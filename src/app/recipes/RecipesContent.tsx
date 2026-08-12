@@ -312,7 +312,7 @@ export function RecipesContent({ acf }: { acf: any }) {
               <div className="mb-6">
                 <h4 className="font-heading text-xl font-bold text-brand-dark mb-3">Ingredients</h4>
                 <ul className="space-y-2 font-sans text-sm text-brand-text">
-                  {selectedRecipe.ingredients.map((ing, i) => (
+                  {selectedRecipe.ingredients.map((ing: any, i: number) => (
                     <li key={i} className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0"></span>
                       <span>{ing}</span>
@@ -325,7 +325,7 @@ export function RecipesContent({ acf }: { acf: any }) {
               <div>
                 <h4 className="font-heading text-xl font-bold text-brand-dark mb-3">Instructions</h4>
                 <ol className="space-y-3 font-sans text-sm text-brand-text">
-                  {selectedRecipe.instructions.map((step, i) => (
+                  {selectedRecipe.instructions.map((step: any, i: number) => (
                     <li key={i} className="flex gap-3">
                       <span className="font-button font-bold text-brand-primary text-sm shrink-0">{i + 1}.</span>
                       <span>{step}</span>
