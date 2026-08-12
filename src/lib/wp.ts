@@ -21,3 +21,24 @@ export async function getHomePageData() {
     return null;
   }
 }
+
+export async function getAboutPageData() {
+  if (!WP_API_URL) return null;
+  
+  try {
+    const res = await fetch(`${WP_API_URL}/pages?slug=about&_fields=id,title,acf&acf_format=standard`, { 
+      cache: "no-store"
+    });
+    
+    if (!res.ok) return null;
+    
+    const pages = await res.json();
+    if (pages && pages.length > 0) {
+      return pages[0].acf || null;
+    }
+    return null;
+  } catch (error) {
+    console.error("Failed to fetch about page data from WP:", error);
+    return null;
+  }
+}

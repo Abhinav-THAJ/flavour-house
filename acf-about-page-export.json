@@ -1,0 +1,120 @@
+[
+    {
+        "key": "group_about_page",
+        "title": "About Page Content",
+        "fields": [
+            {
+                "key": "field_about_tab_hero",
+                "label": "Hero Section",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_about_hero_badge",
+                "label": "Hero Badge",
+                "name": "hero_badge",
+                "type": "text",
+                "default_value": "Rooted in Health, Rich in Flavour"
+            },
+            {
+                "key": "field_about_hero_title",
+                "label": "Hero Title",
+                "name": "hero_title",
+                "type": "text",
+                "default_value": "Our Story"
+            },
+            {
+                "key": "field_about_hero_description",
+                "label": "Hero Description",
+                "name": "hero_description",
+                "type": "textarea",
+                "default_value": "Discover the passion and commitment behind Flavor House. We are dedicated to providing wholesome food items, crafted with natural ingredients and uncompromising quality."
+            },
+            {
+                "key": "field_about_tab_main_content",
+                "label": "Main Content Section",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_about_main_image",
+                "label": "Main Content Image",
+                "name": "main_image",
+                "type": "image",
+                "return_format": "url",
+                "instructions": "The photo content displayed in the About page."
+            },
+            {
+                "key": "field_about_main_promise_badge",
+                "label": "Promise Badge",
+                "name": "main_promise_badge",
+                "type": "text",
+                "default_value": "Our Core Promise"
+            },
+            {
+                "key": "field_about_main_title_part_1",
+                "label": "Main Title Part 1",
+                "name": "main_title_part_1",
+                "type": "text",
+                "default_value": "Delivering Quality Items"
+            },
+            {
+                "key": "field_about_main_title_part_2",
+                "label": "Main Title Part 2 (Italic)",
+                "name": "main_title_part_2",
+                "type": "text",
+                "default_value": "To Every Person"
+            },
+            {
+                "key": "field_about_main_description",
+                "label": "Main Description",
+                "name": "main_description",
+                "type": "textarea",
+                "default_value": "Quality begins at the source. We are deeply committed to giving top quality food items to people everywhere—crafted with traditional care, natural purity, and rich flavours that nourish both body and soul."
+            },
+            {
+                "key": "field_about_values",
+                "label": "Core Values",
+                "name": "core_values",
+                "type": "repeater",
+                "layout": "block",
+                "button_label": "Add Value",
+                "sub_fields": [
+                    {
+                        "key": "field_about_value_title",
+                        "label": "Value Title",
+                        "name": "title",
+                        "type": "text"
+                    },
+                    {
+                        "key": "field_about_value_description",
+                        "label": "Value Description",
+                        "name": "description",
+                        "type": "textarea"
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "about"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Content for the About Page"
+    }
+]
