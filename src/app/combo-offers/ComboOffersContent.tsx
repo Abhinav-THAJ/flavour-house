@@ -161,7 +161,7 @@ export function ComboOffersContent({ acf }: { acf: any }) {
                       What's Included:
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {combo.items.map((item, i) => (
+                      {combo.items.map((item: any, i: number) => (
                         <div key={i} className="flex items-center gap-2 text-xs font-sans text-brand-text">
                           <CheckCircle2 className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                           <span>{item}</span>
