@@ -53,7 +53,7 @@ export function ContactContent({ acf }: { acf?: any }) {
     e.preventDefault();
     
     // Construct the message for WhatsApp
-    const waNumber = acf?.whatsapp_number?.replace(/\D/g, '') || "919446640824";
+    const waNumber = acf?.whatsapp_number ? String(acf.whatsapp_number).replace(/\D/g, '') : "919446640824";
     const text = `*New Contact Form Inquiry*\n\n*Name:* ${formData.name}\n*Email:* ${formData.email}\n*Phone:* ${formData.phone}\n*Subject:* ${formData.subject}\n\n*Message:*\n${formData.message}`;
     
     // Create the WhatsApp deep link
@@ -153,7 +153,7 @@ export function ContactContent({ acf }: { acf?: any }) {
                   </a>
                   
                   <a
-                    href={`https://wa.me/${acf?.whatsapp_number?.replace(/\D/g, '') || "919446640824"}`}
+                    href={`https://wa.me/${acf?.whatsapp_number ? String(acf.whatsapp_number).replace(/\D/g, '') : "919446640824"}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-[#25D366] text-white px-4 py-2 rounded-full font-button text-xs uppercase tracking-wider hover:bg-[#20ba5a] transition-all"
