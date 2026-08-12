@@ -36,7 +36,7 @@ export function AboutContent({ acf }: { acf: any }) {
             className="h-[500px] rounded-[2rem] overflow-hidden bg-brand-sand shadow-xl relative"
           >
              <img 
-               src={acf?.main_image || "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1974&auto=format&fit=crop"} 
+               src={acf?.main_image || acf?.main_content_image || "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1974&auto=format&fit=crop"} 
                className="w-full h-full object-cover" 
                alt="Quality organic produce and ingredients" 
              />
