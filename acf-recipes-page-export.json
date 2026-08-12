@@ -1,0 +1,268 @@
+[
+    {
+        "key": "group_recipes_page",
+        "title": "Recipes Page Content",
+        "fields": [
+            {
+                "key": "field_recipes_tab_hero",
+                "label": "Hero Section",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_recipes_hero_badge",
+                "label": "Hero Badge",
+                "name": "hero_badge",
+                "type": "text",
+                "default_value": "Rooted in Health, Rich in Flavour"
+            },
+            {
+                "key": "field_recipes_hero_title",
+                "label": "Hero Title",
+                "name": "hero_title",
+                "type": "text",
+                "default_value": "Delicious Recipes"
+            },
+            {
+                "key": "field_recipes_hero_description",
+                "label": "Hero Description",
+                "name": "hero_description",
+                "type": "textarea",
+                "default_value": "Discover simple, wholesome, and delicious ways to cook with our products for every meal."
+            },
+            {
+                "key": "field_recipes_hero_image",
+                "label": "Hero Background Image (Optional)",
+                "name": "hero_image",
+                "type": "image",
+                "return_format": "url"
+            },
+            {
+                "key": "field_recipes_tab_recipe_1",
+                "label": "Recipe 1",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_recipes_recipe_1_title",
+                "label": "Recipe Title",
+                "name": "recipe_1_title",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_1_category",
+                "label": "Category",
+                "name": "recipe_1_category",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_1_prepTime",
+                "label": "Prep Time",
+                "name": "recipe_1_prepTime",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_1_cookTime",
+                "label": "Cook Time",
+                "name": "recipe_1_cookTime",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_1_difficulty",
+                "label": "Difficulty",
+                "name": "recipe_1_difficulty",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_1_servings",
+                "label": "Servings",
+                "name": "recipe_1_servings",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_1_image",
+                "label": "Recipe Image",
+                "name": "recipe_1_image",
+                "type": "image",
+                "return_format": "url"
+            },
+            {
+                "key": "field_recipes_recipe_1_description",
+                "label": "Short Description",
+                "name": "recipe_1_description",
+                "type": "textarea"
+            },
+            {
+                "key": "field_recipes_recipe_1_ingredients",
+                "label": "Ingredients (One per line)",
+                "name": "recipe_1_ingredients",
+                "type": "textarea"
+            },
+            {
+                "key": "field_recipes_recipe_1_instructions",
+                "label": "Instructions (One step per line)",
+                "name": "recipe_1_instructions",
+                "type": "textarea"
+            },
+            {
+                "key": "field_recipes_tab_recipe_2",
+                "label": "Recipe 2",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_recipes_recipe_2_title",
+                "label": "Recipe Title",
+                "name": "recipe_2_title",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_2_category",
+                "label": "Category",
+                "name": "recipe_2_category",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_2_prepTime",
+                "label": "Prep Time",
+                "name": "recipe_2_prepTime",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_2_cookTime",
+                "label": "Cook Time",
+                "name": "recipe_2_cookTime",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_2_difficulty",
+                "label": "Difficulty",
+                "name": "recipe_2_difficulty",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_2_servings",
+                "label": "Servings",
+                "name": "recipe_2_servings",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_2_image",
+                "label": "Recipe Image",
+                "name": "recipe_2_image",
+                "type": "image",
+                "return_format": "url"
+            },
+            {
+                "key": "field_recipes_recipe_2_description",
+                "label": "Short Description",
+                "name": "recipe_2_description",
+                "type": "textarea"
+            },
+            {
+                "key": "field_recipes_recipe_2_ingredients",
+                "label": "Ingredients (One per line)",
+                "name": "recipe_2_ingredients",
+                "type": "textarea"
+            },
+            {
+                "key": "field_recipes_recipe_2_instructions",
+                "label": "Instructions (One step per line)",
+                "name": "recipe_2_instructions",
+                "type": "textarea"
+            },
+            {
+                "key": "field_recipes_tab_recipe_3",
+                "label": "Recipe 3",
+                "name": "",
+                "type": "tab",
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_recipes_recipe_3_title",
+                "label": "Recipe Title",
+                "name": "recipe_3_title",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_3_category",
+                "label": "Category",
+                "name": "recipe_3_category",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_3_prepTime",
+                "label": "Prep Time",
+                "name": "recipe_3_prepTime",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_3_cookTime",
+                "label": "Cook Time",
+                "name": "recipe_3_cookTime",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_3_difficulty",
+                "label": "Difficulty",
+                "name": "recipe_3_difficulty",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_3_servings",
+                "label": "Servings",
+                "name": "recipe_3_servings",
+                "type": "text"
+            },
+            {
+                "key": "field_recipes_recipe_3_image",
+                "label": "Recipe Image",
+                "name": "recipe_3_image",
+                "type": "image",
+                "return_format": "url"
+            },
+            {
+                "key": "field_recipes_recipe_3_description",
+                "label": "Short Description",
+                "name": "recipe_3_description",
+                "type": "textarea"
+            },
+            {
+                "key": "field_recipes_recipe_3_ingredients",
+                "label": "Ingredients (One per line)",
+                "name": "recipe_3_ingredients",
+                "type": "textarea"
+            },
+            {
+                "key": "field_recipes_recipe_3_instructions",
+                "label": "Instructions (One step per line)",
+                "name": "recipe_3_instructions",
+                "type": "textarea"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "recipes"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Content for the Recipes Page"
+    }
+]
