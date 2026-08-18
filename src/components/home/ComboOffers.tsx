@@ -86,7 +86,12 @@ export function ComboOffers({ acf }: { acf?: any }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product, index) => (
+          {products.map((product, index) => {
+            const nameMatch = product.name.match(/(.*?)\s*\(?(\d+(?:\.\d+)?\s*(?:g|kg|ml|l|oz|lb))\)?$/i);
+            const displayName = nameMatch ? nameMatch[1].trim() : product.name;
+            const displayWeight = nameMatch ? nameMatch[2].trim() : product.weight;
+            
+            return (
             <Link href={`/products/${product.id}`} key={product.id}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -102,7 +107,9 @@ export function ComboOffers({ acf }: { acf?: any }) {
                     className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
-                <h3 className="font-heading text-2xl font-bold text-white mb-2 line-clamp-1">{product.name}</h3>
+                <h3 className="font-heading text-2xl font-bold text-white mb-2 line-clamp-1">
+                  {displayName} {displayWeight && <span className="text-base font-sans text-brand-sand/60 font-medium">({displayWeight})</span>}
+                </h3>
                 <p className="font-sans text-brand-sand/80 text-sm mb-6 line-clamp-2 flex-grow">
                   {product.description?.replace(/<[^>]*>?/gm, '') || product.category}
                 </p>
@@ -123,7 +130,8 @@ export function ComboOffers({ acf }: { acf?: any }) {
                 </div>
               </motion.div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

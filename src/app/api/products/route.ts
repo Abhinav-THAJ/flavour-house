@@ -28,6 +28,7 @@ export async function GET() {
         sale_price: salePrice ?? regularPrice,
         image: product.images[0]?.src || "https://images.unsplash.com/photo-1598720290281-9f26ae6d6f81", // Fallback image
         description: product.short_description || product.description,
+        weight: product.weight ? `${product.weight}g` : undefined,
       };
     });
 

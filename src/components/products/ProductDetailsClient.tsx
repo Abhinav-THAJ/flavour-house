@@ -12,6 +12,7 @@ interface Product {
   regular_price?: number;
   sale_price?: number;
   image: string;
+  weight?: string;
 }
 
 export function ProductDetailsClient({ product }: { product: Product }) {
@@ -21,8 +22,14 @@ export function ProductDetailsClient({ product }: { product: Product }) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Parse weight out of the name if it's provided at the end, e.g. "Product 500g" or "Product (500g)"
+  const nameMatch = product.name.match(/(.*?)\s*\(?(\d+(?:\.\d+)?\s*(?:g|kg|ml|l|oz|lb))\)?$/i);
+  const displayName = nameMatch ? nameMatch[1].trim() : product.name;
+  const displayWeight = nameMatch ? nameMatch[2].trim() : product.weight;
+
   const handleAddToCart = () => {
-    addToCart({ id: product.id, name: product.name, price: product.price, image: product.image }, quantity);
+    const cartName = nameMatch ? product.name : (displayWeight ? `${product.name} (${displayWeight})` : product.name);
+    addToCart({ id: product.id, name: cartName, price: product.price, image: product.image }, quantity);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2500);
   };
@@ -39,7 +46,7 @@ export function ProductDetailsClient({ product }: { product: Product }) {
         {product.category}
       </p>
       <h1 className="font-heading text-4xl md:text-5xl font-bold text-brand-dark mb-4 leading-tight">
-        {product.name}
+        {displayName} {displayWeight && <small className="text-xl md:text-2xl text-brand-text/60 font-sans font-medium">({displayWeight})</small>}
       </h1>
       <div className="flex items-baseline gap-3 mb-6">
         {product.regular_price && product.sale_price && product.regular_price > product.sale_price ? (
@@ -72,7 +79,7 @@ export function ProductDetailsClient({ product }: { product: Product }) {
       
       <div className="prose prose-brand text-brand-text/80 font-sans mb-8 leading-relaxed">
         <p>
-          Experience the authentic taste and health benefits of our premium {product.name}. 
+          Experience the authentic taste and health benefits of our premium {displayName}. 
           Rooted in health and rich in flavour, it is crafted with 100% natural ingredients without artificial preservatives.
         </p>
         <ul className="space-y-2 mt-4 font-sans text-sm">
@@ -165,7 +172,7 @@ export function ProductDetailsClient({ product }: { product: Product }) {
       {/* Delivery Info */}
       <div className="mt-8 bg-white/60 backdrop-blur-sm p-5 rounded-2xl border border-brand-border text-sm font-sans text-brand-dark space-y-2">
         <p className="flex items-center gap-3">
-          <span className="text-xl">🚚</span> <strong>Free Delivery</strong> on orders over ₹500
+          <span className="text-xl">🚚</span> <strong>Free Delivery</strong> on orders over ₹1000
         </p>
         <p className="flex items-center gap-3">
           <span className="text-xl">⏱️</span> Delivery usually takes 3-5 business days

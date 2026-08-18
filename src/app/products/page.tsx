@@ -92,7 +92,12 @@ function ProductsPageInner() {
     new Set(filteredProducts.map((p) => p.category))
   );
 
-  const ProductCard = ({ product }: { product: any }) => (
+  const ProductCard = ({ product }: { product: any }) => {
+    const nameMatch = product.name.match(/(.*?)\s*\(?(\d+(?:\.\d+)?\s*(?:g|kg|ml|l|oz|lb))\)?$/i);
+    const displayName = nameMatch ? nameMatch[1].trim() : product.name;
+    const displayWeight = nameMatch ? nameMatch[2].trim() : product.weight;
+
+    return (
     <motion.div
       layout
       initial={{ opacity: 0, scale: 0.9 }}
@@ -134,7 +139,7 @@ function ProductsPageInner() {
         </p>
         <Link href={`/products/${product.id}`}>
           <h3 className="font-heading font-bold text-brand-dark text-lg leading-snug mb-2 group-hover:text-brand-primary transition-colors">
-            {product.name}
+            {displayName} {displayWeight && <span className="text-sm font-sans text-brand-text/60 font-medium">({displayWeight})</span>}
           </h3>
         </Link>
         <div className="flex items-baseline gap-2">
@@ -149,7 +154,8 @@ function ProductsPageInner() {
         </div>
       </div>
     </motion.div>
-  );
+    );
+  };
 
   return (
     <div className="bg-white min-h-screen">

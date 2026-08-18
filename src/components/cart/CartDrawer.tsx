@@ -137,12 +137,12 @@ export function CartDrawer() {
                   <div className="flex justify-between text-brand-text/80">
                     <span>Shipping</span>
                     <span className="text-green-600 font-medium">
-                      {subtotal >= 500 ? "FREE" : "₹50"}
+                      {subtotal > 1000 ? "FREE" : `₹${subtotal <= 500 ? 70 : 100}`}
                     </span>
                   </div>
                   <div className="flex justify-between text-brand-dark font-bold text-lg pt-2 border-t border-brand-border">
                     <span>Total</span>
-                    <span>₹{subtotal >= 500 ? subtotal : subtotal + 50}</span>
+                    <span>₹{subtotal > 1000 ? subtotal : subtotal + (subtotal <= 500 ? 70 : 100)}</span>
                   </div>
                 </div>
 

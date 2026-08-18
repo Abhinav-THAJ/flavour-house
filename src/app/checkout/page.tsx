@@ -9,7 +9,7 @@ import { useCart } from "@/context/CartContext";
 export default function CheckoutPage() {
   const { cart, subtotal, totalItems, clearCart } = useCart();
 
-  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [paymentMethod, setPaymentMethod] = useState("online");
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderId, setOrderId] = useState("");
@@ -24,7 +24,14 @@ export default function CheckoutPage() {
     pincode: "",
   });
 
-  const shippingFee = subtotal >= 500 || cart.length === 0 ? 0 : 50;
+  let shippingFee = 0;
+  if (cart.length > 0) {
+    if (subtotal <= 500) {
+      shippingFee = 70;
+    } else if (subtotal <= 1000) {
+      shippingFee = 100;
+    }
+  }
   const finalTotal = subtotal + shippingFee;
 
   const loadRazorpayScript = () => {
@@ -360,22 +367,6 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="space-y-4">
-                    <label className={`flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-brand-primary bg-brand-cream/40 shadow-sm' : 'border-brand-border bg-white'}`}>
-                      <input
-                        type="radio"
-                        name="payment"
-                        value="cod"
-                        checked={paymentMethod === 'cod'}
-                        onChange={() => setPaymentMethod('cod')}
-                        className="accent-brand-primary w-4 h-4"
-                      />
-                      <Banknote className="w-6 h-6 text-brand-primary shrink-0" />
-                      <div>
-                        <p className="font-heading font-bold text-brand-dark text-base">Cash on Delivery (COD)</p>
-                        <p className="font-sans text-xs text-brand-text/60">Pay with cash when your parcel arrives</p>
-                      </div>
-                    </label>
-
                     <label className={`flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === 'online' ? 'border-brand-primary bg-brand-cream/40 shadow-sm' : 'border-brand-border bg-white'}`}>
                       <input
                         type="radio"

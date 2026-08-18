@@ -35,6 +35,7 @@ export default async function SingleProductPage({ params }: { params: Promise<{ 
       sale_price: data.sale_price ? parseFloat(data.sale_price) : parseFloat(data.price || "0"),
       image: data.images[0]?.src || "https://images.unsplash.com/photo-1598720290281-9f26ae6d6f81",
       description: data.short_description || data.description,
+      weight: data.weight ? `${data.weight}g` : undefined,
     };
 
     // Fetch related products from same category
@@ -62,8 +63,9 @@ export default async function SingleProductPage({ params }: { params: Promise<{ 
   } catch (error) {
     // Fallback to local data
     console.error("WooCommerce error on product detail:", error);
-    product = PRODUCTS.find((p) => p.id.toString() === id);
-    if (product) {
+    const localProduct = PRODUCTS.find((p) => p.id.toString() === id);
+    if (localProduct) {
+      product = { ...localProduct };
       relatedProducts = PRODUCTS.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
     }
   }
@@ -107,7 +109,12 @@ export default async function SingleProductPage({ params }: { params: Promise<{ 
               You May Also Like
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {relatedProducts.map((related) => (
+              {relatedProducts.map((related) => {
+                const nameMatch = related.name.match(/(.*?)\s*\(?(\d+(?:\.\d+)?\s*(?:g|kg|ml|l|oz|lb))\)?$/i);
+                const displayName = nameMatch ? nameMatch[1].trim() : related.name;
+                const displayWeight = nameMatch ? nameMatch[2].trim() : related.weight;
+                
+                return (
                 <Link href={`/products/${related.id}`} key={related.id} className="group flex flex-col">
                   <div className="relative aspect-[4/5] bg-brand-sand rounded-3xl overflow-hidden mb-4 border border-white/50 shadow-sm group-hover:shadow-lg transition-all">
                     <img 
@@ -121,7 +128,7 @@ export default async function SingleProductPage({ params }: { params: Promise<{ 
                       {related.category}
                     </p>
                     <h3 className="font-heading font-bold text-brand-dark text-lg mb-1 group-hover:text-brand-primary transition-colors">
-                      {related.name}
+                      {displayName} {displayWeight && <span className="text-sm font-sans text-brand-text/60 font-medium">({displayWeight})</span>}
                     </h3>
                     <div className="flex items-baseline gap-2">
                       {related.regular_price && related.sale_price && related.regular_price > related.sale_price ? (
@@ -135,7 +142,8 @@ export default async function SingleProductPage({ params }: { params: Promise<{ 
                     </div>
                   </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
