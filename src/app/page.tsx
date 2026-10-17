@@ -7,6 +7,9 @@ import { StorySection } from "@/components/home/StorySection";
 import { Newsletter } from "@/components/home/Newsletter";
 import { getHomePageData } from "@/lib/wp";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function Home() {
   const acfData = await getHomePageData();
 

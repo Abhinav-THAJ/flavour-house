@@ -13,7 +13,7 @@ export function ComboOffers({ acf }: { acf?: any }) {
   const [addedId, setAddedId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("/api/products/")
+    fetch("/api/products/", { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         // Find products that might be combos, or just take the first 3
@@ -80,8 +80,8 @@ export function ComboOffers({ acf }: { acf?: any }) {
               {acf?.combo_description || "Get the best of Flavor House with our curated organic selection. Perfect for modern, healthy living."}
             </p>
           </div>
-          <Link href={acf?.combo_button_link || "/products"} className="shrink-0 flex items-center gap-2 text-brand-cream hover:text-brand-primary font-button border-b border-brand-cream hover:border-brand-primary pb-1 transition-all">
-            {acf?.combo_button_text || "View All Products"} <ArrowRight className="w-4 h-4" />
+          <Link href={acf?.combo_button_link || "/combo-offers"} className="shrink-0 flex items-center gap-2 text-brand-cream hover:text-brand-primary font-button border-b border-brand-cream hover:border-brand-primary pb-1 transition-all">
+            {acf?.combo_button_text || "View All Combos"} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 

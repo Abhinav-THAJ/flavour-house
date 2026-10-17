@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ShieldCheck, Truck, CreditCard, CheckCircle2, ArrowLeft, ShoppingBag, Lock, Smartphone, Banknote } from "lucide-react";
+import { ShieldCheck, Truck, CreditCard, CheckCircle2, ArrowLeft, ShoppingBag, Lock, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 
 export default function CheckoutPage() {
   const { cart, subtotal, totalItems, clearCart } = useCart();
 
-  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [paymentMethod, setPaymentMethod] = useState("online");
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderId, setOrderId] = useState("");
@@ -93,14 +93,21 @@ export default function CheckoutPage() {
 
         const rzOrder = await rzRes.json();
         
-        if (rzOrder.error) {
-           alert("Could not initialize payment. Please try again.");
+        if (rzOrder.error || !rzOrder.id) {
+           alert("Could not initialize payment: " + (rzOrder.error || "Please check Razorpay keys."));
+           setIsProcessing(false);
+           return;
+        }
+
+        const razorpayKey = rzOrder.key_id || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+        if (!razorpayKey) {
+           alert("Razorpay Key ID is not configured. Please add NEXT_PUBLIC_RAZORPAY_KEY_ID to .env.local.");
            setIsProcessing(false);
            return;
         }
 
         const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Ensure this is set in .env.local
+          key: razorpayKey,
           amount: rzOrder.amount,
           currency: rzOrder.currency,
           name: "Flavor House",
@@ -350,7 +357,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* 2. Payment Method Selection */}
+                {/* 2. Payment Method */}
                 <div className="bg-white p-8 rounded-3xl shadow-sm border border-brand-border">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-8 h-8 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center font-button font-bold text-sm">
@@ -359,38 +366,15 @@ export default function CheckoutPage() {
                     <h2 className="font-heading text-2xl font-bold text-brand-dark">Payment Method</h2>
                   </div>
 
-                  <div className="space-y-4">
-                    <label className={`flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-brand-primary bg-brand-cream/40 shadow-sm' : 'border-brand-border bg-white'}`}>
-                      <input
-                        type="radio"
-                        name="payment"
-                        value="cod"
-                        checked={paymentMethod === 'cod'}
-                        onChange={() => setPaymentMethod('cod')}
-                        className="accent-brand-primary w-4 h-4"
-                      />
-                      <Banknote className="w-6 h-6 text-brand-primary shrink-0" />
-                      <div>
-                        <p className="font-heading font-bold text-brand-dark text-base">Cash on Delivery (COD)</p>
-                        <p className="font-sans text-xs text-brand-text/60">Pay with cash when your parcel arrives</p>
-                      </div>
-                    </label>
-
-                    <label className={`flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === 'online' ? 'border-brand-primary bg-brand-cream/40 shadow-sm' : 'border-brand-border bg-white'}`}>
-                      <input
-                        type="radio"
-                        name="payment"
-                        value="online"
-                        checked={paymentMethod === 'online'}
-                        onChange={() => setPaymentMethod('online')}
-                        className="accent-brand-primary w-4 h-4"
-                      />
-                      <CreditCard className="w-6 h-6 text-brand-primary shrink-0" />
-                      <div>
-                        <p className="font-heading font-bold text-brand-dark text-base">Pay Online</p>
-                        <p className="font-sans text-xs text-brand-text/60">UPI, Credit/Debit Cards, NetBanking via Razorpay</p>
-                      </div>
-                    </label>
+                  <div className="flex items-center gap-4 p-4 rounded-2xl border border-brand-primary bg-brand-cream/40 shadow-sm">
+                    <CreditCard className="w-6 h-6 text-brand-primary shrink-0" />
+                    <div className="flex-1">
+                      <p className="font-heading font-bold text-brand-dark text-base">Pay Online</p>
+                      <p className="font-sans text-xs text-brand-text/60">UPI, Credit/Debit Cards, NetBanking via Razorpay</p>
+                    </div>
+                    <span className="bg-brand-primary text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full">
+                      100% Secure
+                    </span>
                   </div>
                 </div>
 

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { api } from "@/lib/woocommerce";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
@@ -13,17 +14,32 @@ export async function POST(request: Request) {
 
     const isPaid = paymentMethod === "online";
 
+    // Standardize Indian State codes for WooCommerce and Shiprocket integration
+    const stateCodeMap: Record<string, string> = {
+      "Kerala": "KL",
+      "Tamil Nadu": "TN",
+      "Karnataka": "KA",
+      "Maharashtra": "MH",
+      "Andhra Pradesh": "AP",
+      "Telangana": "TS",
+      "Delhi": "DL",
+      "Gujarat": "GJ",
+      "Uttar Pradesh": "UP",
+    };
+    const stateCode = stateCodeMap[formData.state] || formData.state || "KL";
+
     const orderData = {
       payment_method: isPaid ? "razorpay" : "cod",
       payment_method_title: paymentMethod === "cod" ? "Cash on Delivery" : "Razorpay (Online)",
       set_paid: isPaid,
+      status: "processing", // Standard WooCommerce status for new actionable orders, picked up instantly by Shiprocket
       transaction_id: transactionId || "",
       billing: {
         first_name: firstName,
         last_name: lastName,
         address_1: formData.address,
         city: formData.city,
-        state: formData.state,
+        state: stateCode,
         postcode: formData.pincode,
         country: "IN",
         email: formData.email,
@@ -34,14 +50,38 @@ export async function POST(request: Request) {
         last_name: lastName,
         address_1: formData.address,
         city: formData.city,
-        state: formData.state,
+        state: stateCode,
         postcode: formData.pincode,
         country: "IN",
       },
-      line_items: cart.map((item: any) => ({
-        product_id: item.id,
-        quantity: item.quantity,
-      })),
+    };
+
+    // Separate regular WooCommerce products and custom bundle/combo items
+    const lineItems: any[] = [];
+    const feeLines: any[] = [];
+    const comboNotes: string[] = [];
+
+    cart.forEach((item: any) => {
+      const numId = parseInt(item.id, 10);
+      if (!isNaN(numId) && numId > 0) {
+        lineItems.push({
+          product_id: numId,
+          quantity: item.quantity,
+        });
+      } else {
+        // Custom combo/bundle from ACF without standard WooCommerce product ID
+        feeLines.push({
+          name: `${item.name} (Qty: ${item.quantity})`,
+          total: (item.price * item.quantity).toString(),
+        });
+        comboNotes.push(`${item.name} x${item.quantity}`);
+      }
+    });
+
+    const fullOrderData = {
+      ...orderData,
+      line_items: lineItems,
+      fee_lines: feeLines,
       shipping_lines: [
         {
           method_id: "flat_rate",
@@ -49,14 +89,15 @@ export async function POST(request: Request) {
           total: shippingFee.toString(),
         },
       ],
+      customer_note: comboNotes.length > 0 ? `Bundles Ordered: ${comboNotes.join(", ")}` : "",
     };
 
     if (!process.env.WC_STORE_URL || !process.env.WC_CONSUMER_KEY) {
-      console.log("WooCommerce not configured, returning mock order.", orderData);
+      console.log("WooCommerce not configured, returning mock order.", fullOrderData);
       return NextResponse.json({ id: "FH-MOCK-" + Math.floor(1000 + Math.random() * 9000) });
     }
 
-    const response = await api.post("orders", orderData);
+    const response = await api.post("orders", fullOrderData);
     
     return NextResponse.json({
       id: response.data.id,

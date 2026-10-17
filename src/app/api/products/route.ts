@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { api } from "@/lib/woocommerce";
 import { PRODUCTS } from "@/lib/data";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
   try {

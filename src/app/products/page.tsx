@@ -35,7 +35,7 @@ function ProductsPageInner() {
   }, [searchParams]);
 
   useEffect(() => {
-    fetch("/api/products/")
+    fetch("/api/products/", { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -60,12 +60,13 @@ function ProductsPageInner() {
     setTimeout(() => setAddedId(null), 2000);
   };
 
-  // keyword-based matching: ?category=Pasta matches 'Millet Pasta', 'Specialty Pasta', etc.
+  // keyword-based matching: ?category=Pasta matches 'Millet Pasta', 'Specialty Pasta', 'Macaroni', etc.
   const filteredProducts = products.filter((product) => {
     const keyword = activeCategory.toLowerCase();
     const matchesCategory =
       activeCategory === "All" ||
-      product.category.toLowerCase().includes(keyword);
+      product.category.toLowerCase().includes(keyword) ||
+      (keyword === "pasta" && product.category.toLowerCase().includes("macaroni"));
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
